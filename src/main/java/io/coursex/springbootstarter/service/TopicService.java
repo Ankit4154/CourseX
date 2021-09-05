@@ -18,13 +18,28 @@ public class TopicService {
 	public List<Topic> getAllTopics() {
 		return topics;
 	}
-	
+
 	public Topic getTopic(String id) {
 		return topics.stream().filter(t -> t.getId().equals(id)).findFirst().get();
 	}
 
 	public void addTopic(Topic topic) {
 		topics.add(topic);
+	}
+
+	public List<Topic> updateTopic(Topic topic, String id) {
+		for (int i = 0; i < topics.size(); i++) {
+			if (topics.get(i).getId().equals(id)) {
+				topics.set(i, topic);
+				return topics;
+			}
+		}
+		return topics;
+	}
+
+	public List<Topic> deleteTopic(String id) {
+		topics.removeIf(t -> t.getId().equals(id));
+		return topics;
 	}
 
 }
