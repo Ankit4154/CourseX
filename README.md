@@ -1,2 +1,2 @@
-# CompX
-A spring application for all about Processors, Motherboards & RAMs
+# CouseX
+Spring Boot application starter project.
