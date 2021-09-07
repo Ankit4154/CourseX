@@ -1,5 +1,6 @@
 package io.coursex.springbootstarter.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.coursex.springbootstarter.model.User;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE, 
+		MediaType.APPLICATION_XML_VALUE })
 public class UserController {
 
 	@GetMapping
@@ -21,9 +25,10 @@ public class UserController {
 		return "Get all Users called, page:" + page + " limit:" + limit + " sort:" + sort;
 	}
 
-	@GetMapping("/{userId}")
-	public String getUser(@PathVariable String userId) {
-		return "Get required user :" + userId;
+	@GetMapping(path = "/{userId}")
+	public User getUser(@PathVariable String userId) {
+		System.out.println("Get required user :" + userId);
+		return new User("Ankit", "Singh", "testing@gmail.com", "as");
 	}
 
 	@PostMapping
