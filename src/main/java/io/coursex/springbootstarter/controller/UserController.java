@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,9 +39,9 @@ public class UserController {
 		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
 	}
 
-	@PostMapping
-	public String addUser() {
-		return "add User called";
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<User> addUser(@RequestBody User user) {
+		return new ResponseEntity<User>(user, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{userId}")
