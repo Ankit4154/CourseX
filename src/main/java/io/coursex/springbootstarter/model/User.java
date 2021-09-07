@@ -2,25 +2,32 @@ package io.coursex.springbootstarter.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
 
 	@Id
+	@NotNull(message="first name cannot be null")
 	private String firstName;
+	@NotNull(message="last name cannot be null")
 	private String lastName;
+	@NotNull(message="email cannot be null")
 	private String email;
-	private String userId;
-	
+	@NotNull(message="password cannot be null")
+	@Size(min=1,max=2, message="Password must be equal or maximum of 2 characters")
+	private String password;
+
 	public User() {
 	}
 
-	public User(String firstName, String lastName, String email, String userId) {
+	public User(String firstName, String lastName, String email, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.userId = userId;
+		this.password = password;
 	}
 
 	public String getFirstName() {
@@ -47,12 +54,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getUserPassword() {
+		return password;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserPassword(String password) {
+		this.password = password;
 	}
 
 }
