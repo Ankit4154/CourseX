@@ -1,6 +1,8 @@
 package io.coursex.springbootstarter.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +29,13 @@ public class UserController {
 
 	@GetMapping(path = "/{userId}")
 	public User getUser(@PathVariable String userId) {
-		System.out.println("Get required user :" + userId);
-		return new User("Ankit", "Singh", "testing@gmail.com", "as");
+		return new User("Ankit", "Singh", "testing@gmail.com", userId);
+	}
+	
+	@GetMapping(path = "/{userId}/response")
+	public ResponseEntity<User> getUserResponseStatus(@PathVariable String userId) {
+		// sending User body as 1st parameter and response status 202/Accpeted as 2nd parameter
+		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping
