@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.coursex.springbootstarter.model.User;
 
 @RestController
-@RequestMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE, 
+@RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, 
 		MediaType.APPLICATION_XML_VALUE })
 public class UserController {
 
@@ -43,6 +43,7 @@ public class UserController {
 
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+		// Automatic constraints validation on User properties via Valid annotation
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
 	}
 

@@ -10,6 +10,7 @@ public class User {
 
 	@Id
 	@NotNull(message="first name cannot be null")
+	@Size(min=2, message="first name cannot be less than 2 characters")
 	private String firstName;
 	@NotNull(message="last name cannot be null")
 	private String lastName;
@@ -54,11 +55,11 @@ public class User {
 		this.email = email;
 	}
 
-	public String getUserPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setUserPassword(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
