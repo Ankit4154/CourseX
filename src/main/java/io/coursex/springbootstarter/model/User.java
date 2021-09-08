@@ -19,6 +19,7 @@ public class User {
 	@NotNull(message="password cannot be null")
 	@Size(min=1,max=2, message="Password must be equal or maximum of 2 characters")
 	private String password;
+	private String userId;
 
 	public User() {
 	}
@@ -61,6 +62,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

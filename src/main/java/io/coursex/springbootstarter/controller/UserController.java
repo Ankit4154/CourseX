@@ -1,5 +1,9 @@
 package io.coursex.springbootstarter.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -18,9 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.coursex.springbootstarter.model.User;
 
 @RestController
-@RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, 
-		MediaType.APPLICATION_XML_VALUE })
+@RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class UserController {
+
+	Map<String, User> users;
 
 	@GetMapping
 	public String getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
@@ -31,19 +36,31 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{userId}")
-	public User getUser(@PathVariable String userId) {
-		return new User("Ankit", "Singh", "testing@gmail.com", userId);
+	public ResponseEntity<User> getUser(@PathVariable String userId) {
+		
+		if(users.containsKey(userId)) {
+			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
-	
+
 	@GetMapping(path = "/{userId}/response")
 	public ResponseEntity<User> getUserResponseStatus(@PathVariable String userId) {
-		// sending User body as 1st parameter and response status 202/Accpeted as 2nd parameter
+		// sending User body as 1st parameter and response status 202/Accpeted as 2nd
+		// parameter
 		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-		// Automatic constraints validation on User properties via Valid annotation
+		// Automatic constraints validation on User properties via Valid annotation		
+		String userId = UUID.randomUUID().toString();
+		user.setUserId(userId);
+		if(users == null) {
+			users = new HashMap<>();
+		}
+		users.put(userId, user);
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
 	}
 
