@@ -28,19 +28,19 @@ public class UserController {
 	Map<String, User> users;
 
 	@GetMapping
-	public String getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
+	public Map<String, User> getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
 			@RequestParam(value = "limit", defaultValue = "50") int limit,
 			@RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
 
-		return "Get all Users called, page:" + page + " limit:" + limit + " sort:" + sort;
+		return users;
 	}
 
 	@GetMapping(path = "/{userId}")
 	public ResponseEntity<User> getUser(@PathVariable String userId) {
-		
-		if(users.containsKey(userId)) {
+
+		if (users.containsKey(userId)) {
 			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
-		}else {
+		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
@@ -52,25 +52,31 @@ public class UserController {
 		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
 	}
 
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-		// Automatic constraints validation on User properties via Valid annotation		
+		// Automatic constraints validation on User properties via Valid annotation
 		String userId = UUID.randomUUID().toString();
 		user.setUserId(userId);
-		if(users == null) {
+		if (users == null) {
 			users = new HashMap<>();
 		}
 		users.put(userId, user);
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
 	}
 
-	@PutMapping(path = "/{userId}")
-	public String updateUser(@PathVariable String userId) {
-		return "update User called, userid : " + userId;
+	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody User user) {
+		user.setEmail(users.get(userId).getEmail());
+		user.setPassword(users.get(userId).getPassword());
+		users.put(userId, user);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{userId}")
-	public String deleteUser(@PathVariable String userId) {
-		return "delete User called, userid : " + userId;
+	public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+
+		users.remove(userId);
+		return ResponseEntity.noContent().build();
+
 	}
 }
