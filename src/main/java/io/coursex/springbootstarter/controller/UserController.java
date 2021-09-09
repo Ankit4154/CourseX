@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.coursex.springbootstarter.exception.UserCustomException;
 import io.coursex.springbootstarter.model.User;
 
 @RestController
@@ -37,11 +38,15 @@ public class UserController {
 
 	@GetMapping(path = "/{userId}")
 	public ResponseEntity<User> getUser(@PathVariable String userId) {
-		
-		String temp = null;
-		temp.length();
-			
-		
+		// testing exception handling, nullpointerexception handling
+		// String temp = null;
+		// temp.length();
+
+		// testing custom user exception
+		if (true) {
+			throw new UserCustomException("User service exception is thrown");
+		}
+
 		if (users.containsKey(userId)) {
 			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
 		} else {
