@@ -37,7 +37,11 @@ public class UserController {
 
 	@GetMapping(path = "/{userId}")
 	public ResponseEntity<User> getUser(@PathVariable String userId) {
-
+		
+		String temp = null;
+		temp.length();
+			
+		
 		if (users.containsKey(userId)) {
 			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
 		} else {
