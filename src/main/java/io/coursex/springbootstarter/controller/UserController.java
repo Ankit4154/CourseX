@@ -1,11 +1,10 @@
 package io.coursex.springbootstarter.controller;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.coursex.springbootstarter.exception.UserCustomException;
+//import io.coursex.springbootstarter.exception.UserCustomException;
 import io.coursex.springbootstarter.model.User;
+import io.coursex.springbootstarter.service.UserService;
 
 @RestController
 @RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class UserController {
 
 	Map<String, User> users;
+	@Autowired
+	UserService userService;
 
 	@GetMapping
 	public Map<String, User> getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
@@ -43,9 +45,9 @@ public class UserController {
 		// temp.length();
 
 		// testing custom user exception
-		if (true) {
-			throw new UserCustomException("User service exception is thrown");
-		}
+		// if (true) {
+		//	throw new UserCustomException("User service exception is thrown");
+		// }
 
 		if (users.containsKey(userId)) {
 			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
@@ -56,21 +58,13 @@ public class UserController {
 
 	@GetMapping(path = "/{userId}/response")
 	public ResponseEntity<User> getUserResponseStatus(@PathVariable String userId) {
-		// sending User body as 1st parameter and response status 202/Accpeted as 2nd
-		// parameter
+		// sending User body as 1st parameter and response status 202/Accepted as 2nd parameter
 		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
 	}
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-		// Automatic constraints validation on User properties via Valid annotation
-		String userId = UUID.randomUUID().toString();
-		user.setUserId(userId);
-		if (users == null) {
-			users = new HashMap<>();
-		}
-		users.put(userId, user);
-		return new ResponseEntity<User>(user, HttpStatus.CREATED);
+		return new ResponseEntity<User>(userService.addUser(user), HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
