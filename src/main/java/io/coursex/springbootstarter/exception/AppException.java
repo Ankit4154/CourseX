@@ -25,24 +25,14 @@ public class AppException extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR); 
 	}
 	
-	@ExceptionHandler(value= {NullPointerException.class})
-	public ResponseEntity<Object> handleNullPointerException(NullPointerException npe, WebRequest req){
-		String errorMessageDescription = npe.getLocalizedMessage();
+	@ExceptionHandler(value= {NullPointerException.class, UserCustomException.class})
+	public ResponseEntity<Object> handleSpecificExceptions(Exception e, WebRequest req){
+		String errorMessageDescription = e.getLocalizedMessage();
 		if(errorMessageDescription == null) {
-			errorMessageDescription = npe.toString().concat(" This is from NullPointerException method handler");
+			errorMessageDescription = e.toString().concat(" This is from Specific Exception method handler");
 		}
 		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR); 
 	}
-	
-	@ExceptionHandler(value= {UserCustomException.class})
-	public ResponseEntity<Object> handleUserCustomException(UserCustomException uce, WebRequest req){
-		String errorMessageDescription = uce.getLocalizedMessage();
-		if(errorMessageDescription == null) {
-			errorMessageDescription = uce.toString();
-		}
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
-		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR); 
-	}
-	
+
 }
