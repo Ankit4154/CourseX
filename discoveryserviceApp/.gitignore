@@ -6,7 +6,7 @@ target/
 !**/src/test/**/target/
 mvnw
 mvnw.cmd
-bin
+bin/
 
 ### STS ###
 .apt_generated
