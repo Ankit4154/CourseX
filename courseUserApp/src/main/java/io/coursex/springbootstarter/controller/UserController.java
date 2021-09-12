@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -63,22 +65,25 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-
+	/*
 	@GetMapping(path = "/{userId}/response")
 	public ResponseEntity<User> getUserResponseStatus(@PathVariable String userId) {
 		// sending User body as 1st parameter and response status 202/Accepted as 2nd parameter
 		return new ResponseEntity<User>(new User("Ankit", "Singh", "testing@gmail.com", userId), HttpStatus.ACCEPTED);
-	}
+	}*/
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-		return new ResponseEntity<User>(userService.addUser(user), HttpStatus.CREATED);
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		User tempUser = modelMapper.map(user, User.class);
+		return new ResponseEntity<User>(userService.addUser(tempUser), HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody User user) {
 		user.setEmail(users.get(userId).getEmail());
-		user.setPassword(users.get(userId).getPassword());
+		user.setEncryptedPassword(users.get(userId).getEncryptedPassword());
 		users.put(userId, user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
