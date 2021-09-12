@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ import io.coursex.springbootstarter.model.User;
 import io.coursex.springbootstarter.service.UserService;
 
 @RestController
-@RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+@RequestMapping(path = "users")//, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class UserController {
 
 	Map<String, User> users;
 	@Autowired
 	UserService userService;
+	@Autowired
+	Environment env;
 
 	@GetMapping
 	public Map<String, User> getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
@@ -36,6 +39,11 @@ public class UserController {
 			@RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
 
 		return users;
+	}
+	
+	@GetMapping(path = "/test")
+	public String getUserTest() {
+		return "Working on port : "+env.getProperty("local.server.port");
 	}
 
 	@GetMapping(path = "/{userId}")
