@@ -27,7 +27,7 @@ import io.coursex.springbootstarter.model.UserResponse;
 import io.coursex.springbootstarter.service.UserService;
 
 @RestController
-@RequestMapping(path = "users")//, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+@RequestMapping(path = "users", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class UserController {
 
 	Map<String, User> users;
