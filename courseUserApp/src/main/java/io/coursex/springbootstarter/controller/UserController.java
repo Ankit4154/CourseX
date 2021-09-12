@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //import io.coursex.springbootstarter.exception.UserCustomException;
 import io.coursex.springbootstarter.model.User;
+import io.coursex.springbootstarter.model.UserResponse;
 import io.coursex.springbootstarter.service.UserService;
 
 @RestController
@@ -73,11 +74,15 @@ public class UserController {
 	}*/
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+	public ResponseEntity<UserResponse> addUser(@Valid @RequestBody User user) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		// using modelMapper validations for geting exact Entity object parameters in request
 		User tempUser = modelMapper.map(user, User.class);
-		return new ResponseEntity<User>(userService.addUser(tempUser), HttpStatus.CREATED);
+		//Created UserResponse model to send out only required/specific details/data
+		UserResponse userResponse = modelMapper.map(userService.addUser(tempUser), UserResponse.class);
+		return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+		//return new ResponseEntity<User>(userService.addUser(tempUser), HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
