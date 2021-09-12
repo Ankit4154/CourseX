@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -34,6 +35,8 @@ public class User implements Serializable {
 	private String encryptedPassword;
 	@Column(nullable=false, unique=true)
 	private String userId;
+	@Transient
+	private String password;
 
 	public User() {
 	}
@@ -91,6 +94,14 @@ public class User implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

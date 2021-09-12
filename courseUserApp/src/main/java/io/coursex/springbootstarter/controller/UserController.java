@@ -77,7 +77,7 @@ public class UserController {
 	public ResponseEntity<UserResponse> addUser(@Valid @RequestBody User user) {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		// using modelMapper validations for geting exact Entity object parameters in request
+		// using modelMapper validations for getting exact Entity object parameters in request
 		User tempUser = modelMapper.map(user, User.class);
 		//Created UserResponse model to send out only required/specific details/data
 		UserResponse userResponse = modelMapper.map(userService.addUser(tempUser), UserResponse.class);
