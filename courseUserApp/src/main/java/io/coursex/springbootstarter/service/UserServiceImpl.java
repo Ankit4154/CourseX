@@ -1,11 +1,14 @@
 package io.coursex.springbootstarter.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +54,16 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(userEntity);
 		
 		return userEntity;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByEmail(username);
+		if(user == null) {
+			throw new UsernameNotFoundException(username);
+		}else {
+			return new org.springframework.security.core.userdetails.User(user.getEmail(), 
+					user.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
+		}
 	}
 }
