@@ -1,16 +1,13 @@
 package io.coursex.springbootstarter.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.coursex.springbootstarter.model.Course;
-import io.coursex.springbootstarter.model.Topic;
 import io.coursex.springbootstarter.repository.CourseRepository;
-import io.coursex.springbootstarter.repository.TopicRepository;
 
 @Service
 public class CourseService {
