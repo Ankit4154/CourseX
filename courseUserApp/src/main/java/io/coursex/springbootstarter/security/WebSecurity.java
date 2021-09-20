@@ -1,11 +1,9 @@
 package io.coursex.springbootstarter.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< HEAD
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-=======
->>>>>>> parent of 5f7423d... Added security filter to get requests from specific IP
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,7 +15,6 @@ import io.coursex.springbootstarter.service.UserServiceImpl;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-<<<<<<< HEAD
 	private Environment env;
 	private UserServiceImpl userService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -29,18 +26,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
-=======
->>>>>>> parent of 5f7423d... Added security filter to get requests from specific IP
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-<<<<<<< HEAD
-		http.authorizeRequests().antMatchers("/users/**").permitAll().and().addFilter(getAuthenticationFilter());
+		//http.authorizeRequests().antMatchers("/users/**").permitAll().and().addFilter(getAuthenticationFilter());
 		// For accepting requests only from specific IPs
 		// http.authorizeRequests().antMatchers("/**").hasIpAddress(env.getProperty("gateway.ip"));
-=======
 		http.authorizeRequests().antMatchers("/users/**").permitAll();
->>>>>>> parent of 5f7423d... Added security filter to get requests from specific IP
 		http.headers().frameOptions().disable();
 	}
 
