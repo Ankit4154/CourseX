@@ -66,4 +66,13 @@ public class UserServiceImpl implements UserService {
 					user.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
 		}
 	}
+
+	@Override
+	public User getUserDetailsByEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if(user == null) {
+			throw new UsernameNotFoundException(email);
+		}
+		return new ModelMapper().map(user, User.class);
+	}
 }
