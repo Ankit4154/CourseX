@@ -36,13 +36,30 @@ public class UserController {
 	@Autowired
 	Environment env;
 
+	/*
+	 * @GetMapping public Map<String, User> getUsers(@RequestParam(value = "page",
+	 * defaultValue = "50", required = false) int page,
+	 * 
+	 * @RequestParam(value = "limit", defaultValue = "50") int limit,
+	 * 
+	 * @RequestParam(value = "sort", defaultValue = "desc", required = false) String
+	 * sort) {
+	 * 
+	 * return users; }
+	 */
+	/*
 	@GetMapping
-	public Map<String, User> getUsers(@RequestParam(value = "page", defaultValue = "50", required = false) int page,
-			@RequestParam(value = "limit", defaultValue = "50") int limit,
-			@RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
+	public Map<String, User> getUsers() {
 
 		return users;
-	}
+	}*/
+	/*
+	@GetMapping(path="/status/check")
+	public ResponseEntity<User> getStatusCheck() {
+		System.out.println("Inside status check");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}*/
+	
 	
 	@GetMapping(path = "/test")
 	public String getUserTest() {
