@@ -29,7 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/**").permitAll()
+		http.authorizeRequests().antMatchers("/users/**").permitAll()
 		.and()
 		.addFilter(getAuthenticationFilter());
 		// For accepting requests only from specific IPs
