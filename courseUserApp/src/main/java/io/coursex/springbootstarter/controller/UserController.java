@@ -64,7 +64,8 @@ public class UserController {
 	@GetMapping(path="/status/check")
 	public String getUsers() {
 
-		return "Working on port : "+env.getProperty("local.server.port");
+		return "Working on port : "+env.getProperty("local.server.port")
+				+ ", with token ="+env.getProperty("token.secret");
 	}
 	
 	@GetMapping(path = "/test")
