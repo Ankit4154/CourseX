@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CourseConfigServerApplication {
 
 	public static void main(String[] args) {
+		System.out.println("This is test");
 		SpringApplication.run(CourseConfigServerApplication.class, args);
 	}
 
