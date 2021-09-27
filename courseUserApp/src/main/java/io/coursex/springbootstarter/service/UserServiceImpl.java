@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import io.coursex.springbootstarter.Utils;
 import io.coursex.springbootstarter.model.AlbumResponse;
+import io.coursex.springbootstarter.model.AlbumsServiceClient;
 import io.coursex.springbootstarter.model.User;
 import io.coursex.springbootstarter.model.UserResponse;
 import io.coursex.springbootstarter.repository.UserRepository;
@@ -31,20 +32,23 @@ public class UserServiceImpl implements UserService {
 	Utils util;
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	RestTemplate restTemplate;
+	AlbumsServiceClient albumsServiceClient;
 	Environment env;
-	
+
 	UserRepository userRepository;
 
 	public UserServiceImpl() {
 	}
-	
+
 	@Autowired
-	public UserServiceImpl(Utils util, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RestTemplate restTemplate, Environment env) {
+	public UserServiceImpl(Utils util, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+			RestTemplate restTemplate, Environment env, AlbumsServiceClient albumsServiceClient) {
 		this.util = util;
 		this.userRepository = userRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.restTemplate = restTemplate;
 		this.env = env;
+		this.albumsServiceClient = albumsServiceClient;
 	}
 
 	@Override
@@ -56,33 +60,33 @@ public class UserServiceImpl implements UserService {
 		if (users == null) {
 			users = new HashMap<>();
 		}
-		
+
 		users.put(userId, user);
-		
+
 		// Mapping source objects to destination objects via modelmapper
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		User userEntity = modelMapper.map(user, User.class);
 		userRepository.save(userEntity);
-		
+
 		return userEntity;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException(username);
-		}else {
-			return new org.springframework.security.core.userdetails.User(user.getEmail(), 
-					user.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
+		} else {
+			return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPassword(),
+					true, true, true, true, new ArrayList<>());
 		}
 	}
 
 	@Override
 	public User getUserDetailsByEmail(String email) {
 		User user = userRepository.findByEmail(email);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException(email);
 		}
 		return new ModelMapper().map(user, User.class);
@@ -91,19 +95,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserResponse getUserByUserId(String userId) {
 		User user = userRepository.findByUserId(userId);
-		if(user == null) throw new UsernameNotFoundException("user not found");
-		
-		
+		if (user == null)
+			throw new UsernameNotFoundException("user not found");
+
 		ModelMapper modelMapper = new ModelMapper();
 		UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-		
+
+		// Using RestTemplate as HTTP Client
+		/*
 		String albumUrl = String.format(env.getProperty("albums.url"), userId);
-		
-		ResponseEntity<List<AlbumResponse>> albumListResponse =  restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponse>>() {});
+
+		ResponseEntity<List<AlbumResponse>> albumListResponse = restTemplate.exchange(albumUrl, HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<AlbumResponse>>() {
+				});
 		List<AlbumResponse> albumList = albumListResponse.getBody();
-		
+		*/
+		List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
 		userResponse.setAlbums(albumList);
-		
+
 		return userResponse;
 	}
 }
