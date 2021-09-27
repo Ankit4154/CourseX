@@ -1,6 +1,7 @@
 package io.coursex.springbootstarter.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,7 @@ public class User implements Serializable {
 	private String userId;
 	@Transient
 	private String password;
-
+	
 	public User() {
 	}
 

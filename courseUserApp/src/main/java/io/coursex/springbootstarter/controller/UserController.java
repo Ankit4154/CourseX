@@ -74,7 +74,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{userId}")
-	public ResponseEntity<User> getUser(@PathVariable String userId) {
+	public ResponseEntity<UserResponse> getUser(@PathVariable String userId) {
 		// testing exception handling, nullpointerexception handling
 		// String temp = null;
 		// temp.length();
@@ -83,12 +83,18 @@ public class UserController {
 		// if (true) {
 		//	throw new UserCustomException("User service exception is thrown");
 		// }
-
+		/*
 		if (users.containsKey(userId)) {
-			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+			return new ResponseEntity<User>(users.get(userId), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+		}*/
+		if(userService.getUserByUserId(userId) != null) {
+			return new ResponseEntity<UserResponse>(userService.getUserByUserId(userId), HttpStatus.OK);
+		}else {
+			return new ResponseEntity<UserResponse>(HttpStatus.NO_CONTENT);
 		}
+		
 	}
 	/*
 	@GetMapping(path = "/{userId}/response")
