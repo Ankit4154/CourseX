@@ -115,14 +115,16 @@ public class UserServiceImpl implements UserService {
 				});
 		List<AlbumResponse> albumList = albumListResponse.getBody();
 		*/
-		try {
-			// List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
-			// Testing exception handling of Feign Client
-			List<AlbumResponse> albumList = null;
+		
+		// Testing exception handling of Feign Client
+		// try {
+			List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
+			
+			//List<AlbumResponse> albumList = null;
 			userResponse.setAlbums(albumList);
-		}catch(FeignException fe){
+		/*}catch(FeignException fe){
 			logger.error(fe.getLocalizedMessage());
-		}
+		}*/
 		return userResponse;
 	}
 }

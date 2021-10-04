@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import feign.Logger;
+import io.coursex.springbootstarter.service.FeignErrorDecoder;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -36,5 +37,12 @@ public class CourseXApi {
 	Logger.Level feignLoggerLevel(){
 		return Logger.Level.FULL;	
 	}
+	
+	/*
+	 * Commenting @Bean annotation as added @Component at class level
+	@Bean
+	public FeignErrorDecoder getFeignErrorDecoder() {
+		return new FeignErrorDecoder();
+	}*/
 
 }
