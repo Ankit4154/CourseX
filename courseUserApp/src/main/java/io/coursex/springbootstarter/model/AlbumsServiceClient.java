@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name="albums")
 public interface AlbumsServiceClient {
 
-	@GetMapping("/users/{id}/albums")
+	// @GetMapping("/users/{id}/albums")
+	// Changed uri to ss for raising FeignException
+	@GetMapping("/users/{id}/albumss")
 	public List<AlbumResponse> getAlbums(@PathVariable String id);
 }

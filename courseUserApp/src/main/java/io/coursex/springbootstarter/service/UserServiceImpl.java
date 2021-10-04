@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import feign.FeignException;
 import io.coursex.springbootstarter.Utils;
 import io.coursex.springbootstarter.model.AlbumResponse;
 import io.coursex.springbootstarter.model.AlbumsServiceClient;
@@ -36,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	Environment env;
 
 	UserRepository userRepository;
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public UserServiceImpl() {
 	}
@@ -110,9 +115,14 @@ public class UserServiceImpl implements UserService {
 				});
 		List<AlbumResponse> albumList = albumListResponse.getBody();
 		*/
-		List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
-		userResponse.setAlbums(albumList);
-
+		try {
+			// List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
+			// Testing exception handling of Feign Client
+			List<AlbumResponse> albumList = null;
+			userResponse.setAlbums(albumList);
+		}catch(FeignException fe){
+			logger.error(fe.getLocalizedMessage());
+		}
 		return userResponse;
 	}
 }
