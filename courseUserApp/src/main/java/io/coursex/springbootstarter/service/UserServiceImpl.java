@@ -118,8 +118,9 @@ public class UserServiceImpl implements UserService {
 		
 		// Testing exception handling of Feign Client
 		// try {
+			logger.info("Before calling albums microservices");
 			List<AlbumResponse> albumList = albumsServiceClient.getAlbums(userId);
-			
+			logger.info("After calling albums microservices");
 			//List<AlbumResponse> albumList = null;
 			userResponse.setAlbums(albumList);
 		/*}catch(FeignException fe){
