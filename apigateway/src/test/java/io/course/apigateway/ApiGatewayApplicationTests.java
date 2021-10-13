@@ -1,4 +1,4 @@
-package com.io.course.api.gateway;
+package io.course.apigateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
